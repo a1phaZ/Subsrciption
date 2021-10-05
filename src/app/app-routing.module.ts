@@ -14,7 +14,12 @@ const routes: Routes = [
   {
     path: 'main',
     loadChildren: () => import('./pages/main-list/main-list.module').then( m => m.MainListPageModule)
+  },
+  {
+    path: 'form/:action',
+    loadChildren: () => import('./pages/form-page/form-page.module').then( m => m.FormPageModule)
   }
+
 
 ];
 

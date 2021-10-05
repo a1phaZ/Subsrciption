@@ -1,0 +1,26 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons [slot]="'start'">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{action}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form">
+    <ion-item *ngFor="let field of fields">
+        <ion-label>{{field.label}}</ion-label>
+        <ion-input *ngIf="field.type !== 'date' else datePicker" name="{{field.name}}" formControlName="{{field.name}}" type="{{field.type}}" value="{{field.name}}"></ion-input>
+        <ng-template #datePicker>
+          <ion-datetime value="{{field.name}}" formControlName="{{field.name}}" name="{{field.name}}"></ion-datetime>
+        </ng-template>
+    </ion-item>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button (click)="submit()" [expand]="'block'" [disabled]="!form.valid">{{button.text}}</ion-button>
+  </ion-toolbar>
+</ion-footer>

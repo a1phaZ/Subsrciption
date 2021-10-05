@@ -1,5 +1,7 @@
-import {Injectable} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
+import {Injectable}          from '@angular/core';
+import {FormBuilder}         from '@angular/forms';
+import { IFormField }        from '../interfaces/iform-field';
+import { IDefaultFormField } from '../interfaces/idefault-form-field';
 
 @Injectable({
   providedIn: 'root'
@@ -8,22 +10,16 @@ export class FormService {
 
   constructor(private formBuilder: FormBuilder) { }
 
-  createForm(defaultFields) {
+  createForm(defaultFields: IDefaultFormField[]) {
     return this.formBuilder.group(reduceControls(defaultFields));
   }
 
-  getFields(defaultFields) {
-    return defaultFields.map(({type, name}) => ({type, name}));
+  getFields(defaultFields: IDefaultFormField[]) {
+    return defaultFields.map(({type, name, label}: IFormField) => ({type, name, label}));
   }
 }
 
-const reduceControls = (fields) => fields.reduce((acc, cur) => {
+const reduceControls = (fields: IDefaultFormField[]) => fields.reduce((acc, cur) => {
     const {name, control} = cur;
     return {...acc, [name]: control};
   }, {});
-
-export interface IDefaultFormField {
-  control: any[];
-  type: string;
-  name: string;
-}

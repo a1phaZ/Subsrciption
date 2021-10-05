@@ -35,7 +35,9 @@
             "prefix": "app",
             "style": "camelCase"
           }
-        ]
+        ],
+        "no-trailing-spaces": "off",
+        "no-underscore-dangle": "off"
       }
     },
     {
