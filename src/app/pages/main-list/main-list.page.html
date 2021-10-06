@@ -14,7 +14,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let item of itemList">
+    <ion-item *ngFor="let item of itemList" [routerLink]="['/detail', item.id]">
       <ion-avatar>
         <img src="{{item.img}}" alt="Avatar">
       </ion-avatar>
