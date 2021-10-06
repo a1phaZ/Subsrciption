@@ -1,4 +1,4 @@
-import {Component, OnInit}      from '@angular/core';
+import { Component, OnInit }    from '@angular/core';
 import { SubscriptionsService } from '../../services/subscriptions.service';
 
 @Component({
@@ -11,9 +11,11 @@ export class MainListPage implements OnInit {
   public itemList: any;
 
   constructor(private subs: SubscriptionsService) {
+    this.itemList = subs.list;
+    subs.listChange.subscribe(value => this.itemList = value);
   }
 
   ngOnInit() {
-    this.itemList = this.subs.list;
+
   }
 }
