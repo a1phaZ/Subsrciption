@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons [slot]="'start'">
+      <ion-back-button id="back-button"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ sub?.name || 'Loading...' }}</ion-title>
+    <ion-buttons [slot]="'end'" *ngIf="sub">
+      <ion-button [fill]="'clear'" (click)="onRemove(sub.id)">
+        <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+</ion-content>
