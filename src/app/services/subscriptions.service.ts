@@ -1,8 +1,9 @@
-import { Injectable }    from '@angular/core';
-import { of, Subject }   from 'rxjs';
-import { delay }         from 'rxjs/operators';
-import { Handlers }      from '../classes/handlers';
-import { ISubscription } from '../interfaces/isubscription';
+import { Injectable }          from '@angular/core';
+import { of, Subject }         from 'rxjs';
+import { delay }               from 'rxjs/operators';
+import { Handlers }            from '../classes/handlers';
+import { ISubscription }       from '../interfaces/isubscription';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,9 @@ export class SubscriptionsService {
 
   listChange: Subject<ISubscription[]> = new Subject<ISubscription[]>();
 
-  constructor() {
+  constructor(
+    private notify: NotificationService
+  ) {
     this.getSubs().subscribe(res => this.list = res.data);
     this.listChange.next(this.list);
   }
@@ -29,6 +32,7 @@ export class SubscriptionsService {
     const _list = this.list;
     _list.push({...sub, id: this.list[this.list.length - 1].id + 1});
     this.listChange.next(_list);
+    this.notify.showToast('Добавление успешно');
     return of({message: 'ok'});
   }
 
@@ -36,6 +40,7 @@ export class SubscriptionsService {
     const _list = Handlers.removeFormArray(this.list, id, 'id');
     this.listChange.next(_list);
     this.list = _list;
+    this.notify.showToast('Удаление успешно');
     return of({message: 'Remove success', list: this.list}).pipe(delay(2000));
   }
 }
