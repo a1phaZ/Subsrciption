@@ -14,9 +14,14 @@ export class LoginPage implements OnInit {
     public authService: AuthenticationService,
     public router: Router,
     public notify: NotificationService
-  ) { }
+  ) {
+    if (authService.isLoggedIn) {
+      router.navigate(['/main']);
+    }
+  }
 
   ngOnInit() {
+
   }
 
   logIn(email, password) {
@@ -30,6 +35,9 @@ export class LoginPage implements OnInit {
           return false;
         }
       })
-      .catch(err => this.notify.showToast(err.message));
+      .catch(err => {
+        console.log(err);
+        this.notify.showToast(err.message);
+      });
   }
 }

@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule }                                from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard }                               from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -9,19 +10,23 @@ const routes: Routes = [
   },
   {
     path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
+    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'main',
-    loadChildren: () => import('./pages/main-list/main-list.module').then( m => m.MainListPageModule)
+    loadChildren: () => import('./pages/main-list/main-list.module').then( m => m.MainListPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'form/:action',
-    loadChildren: () => import('./pages/form-page/form-page.module').then( m => m.FormPageModule)
+    loadChildren: () => import('./pages/form-page/form-page.module').then( m => m.FormPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'detail/:id',
-    loadChildren: () => import('./pages/detail-page/detail-page.module').then( m => m.DetailPagePageModule)
+    loadChildren: () => import('./pages/detail-page/detail-page.module').then( m => m.DetailPagePageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'registration',

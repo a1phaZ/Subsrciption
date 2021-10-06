@@ -19,6 +19,7 @@ export class AuthenticationService {
     public ngZone: NgZone
   ) {
     this.ngFireAuth.authState.subscribe(user => {
+      console.log(user);
       if (user) {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
@@ -31,8 +32,8 @@ export class AuthenticationService {
   }
 
   // Login in with email/password
-  signIn(email, password) {
-    return this.ngFireAuth.signInWithEmailAndPassword(email, password);
+  async signIn(email, password) {
+    return await this.ngFireAuth.signInWithEmailAndPassword(email, password);
   }
 
   // Register user with email/password
