@@ -3,6 +3,11 @@ import { from, of }          from 'rxjs';
 import { map }               from 'rxjs/operators';
 
 export class Handlers {
+  /**
+   * Преобразование даты
+   *
+   * @param data
+   */
   static serializeDate(data: IDefaultFormField[]): IDefaultFormField {
     let _data: IDefaultFormField;
     from(data).pipe(
@@ -15,6 +20,17 @@ export class Handlers {
       })
     ).subscribe((d) => _data = d);
     return _data;
+  }
+
+  /**
+   * Удаление элемента из массива
+   *
+   * @param array
+   * @param id
+   * @param field
+   */
+  static removeFormArray(array, id, field) {
+    return array.filter(item => item[field] !== id);
   }
 
   private static formatDate(date: Date) {
