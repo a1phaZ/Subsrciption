@@ -1,5 +1,7 @@
 import { Injectable }    from '@angular/core';
-import { of }            from 'rxjs';
+import { of, Subject }   from 'rxjs';
+import { delay }         from 'rxjs/operators';
+import { Handlers }      from '../classes/handlers';
 import { ISubscription } from '../interfaces/isubscription';
 
 @Injectable({
@@ -8,17 +10,33 @@ import { ISubscription } from '../interfaces/isubscription';
 export class SubscriptionsService {
   list: ISubscription[] = subs;
 
+  listChange: Subject<ISubscription[]> = new Subject<ISubscription[]>();
+
   constructor() {
     this.getSubs().subscribe(res => this.list = res.data);
+    this.listChange.next(this.list);
   }
 
   getSubs() {
     return of({data: this.list});
   }
 
+  getSub(id) {
+    return of({data: this.list.find((item) => item.id === id)}).pipe(delay(2000));
+  }
+
   addSub(sub) {
-    this.list.push(sub);
+    const _list = this.list;
+    _list.push({...sub, id: this.list[this.list.length - 1].id + 1});
+    this.listChange.next(_list);
     return of({message: 'ok'});
+  }
+
+  removeSub(id) {
+    const _list = Handlers.removeFormArray(this.list, id, 'id');
+    this.listChange.next(_list);
+    this.list = _list;
+    return of({message: 'Remove success', list: this.list}).pipe(delay(2000));
   }
 }
 
