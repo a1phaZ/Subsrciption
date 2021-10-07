@@ -18,22 +18,19 @@ export class AuthenticationService {
     public router: Router,
     public ngZone: NgZone
   ) {
-    this.ngFireAuth.authState.subscribe(user => {
-      console.log(user);
+    this.ngFireAuth.onAuthStateChanged((user) => {
       if (user) {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user'));
       } else {
         localStorage.setItem('user', null);
-        JSON.parse(localStorage.getItem('user'));
       }
     });
   }
 
   // Login in with email/password
-  async signIn(email, password) {
-    return await this.ngFireAuth.signInWithEmailAndPassword(email, password);
+  signIn(email, password) {
+    return this.ngFireAuth.signInWithEmailAndPassword(email, password);
   }
 
   // Register user with email/password
