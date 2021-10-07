@@ -3,6 +3,7 @@ import { IUser }                                      from '../interfaces/iuser'
 import { Router }                                     from '@angular/router';
 import { AngularFireAuth }                            from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { NotificationService }                        from './notification.service';
 // import auth from '@firebase/auth';
 
 
@@ -16,7 +17,8 @@ export class AuthenticationService {
     public afStore: AngularFirestore,
     public ngFireAuth: AngularFireAuth,
     public router: Router,
-    public ngZone: NgZone
+    public ngZone: NgZone,
+    private notify: NotificationService
   ) {
     this.ngFireAuth.onAuthStateChanged((user) => {
       if (user) {
@@ -49,22 +51,26 @@ export class AuthenticationService {
   passwordRecover(passwordResetEmail) {
     return this.ngFireAuth.sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
-        window.alert('Password reset email has been sent, please check your inbox.');
+        this.notify.showToast('Password reset email has been sent, please check your inbox.');
       }).catch((error) => {
-        window.alert(error);
+        this.notify.showToast(error.message);
       });
   }
 
-  // Returns true when user is looged in
+  // Returns true when user is logged in
   get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(this.getItem('user'));
     return (user !== null && user.emailVerified !== false);
   }
 
   // Returns true when user's email is verified
   get isEmailVerified(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(this.getItem('user'));
     return (user.emailVerified !== false);
+  }
+
+  getItem(key) {
+    return localStorage.getItem(key);
   }
 
   // Sign in with Gmail
@@ -81,6 +87,7 @@ export class AuthenticationService {
         });
         this.setUserData(result.user);
       }).catch((error) => {
+        this.notify.showToast(error.message);
         window.alert(error);
       });
   }
